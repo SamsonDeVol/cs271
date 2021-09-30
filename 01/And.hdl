@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/And.hdl
 
+// Samson DeVol
+
 /**
  * And gate: 
  * out = 1 if (a == 1 and b == 1)
@@ -14,5 +16,6 @@ CHIP And {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Nand(a=a, b=b, out=nand);
+    Not(in=nand, out=out);
 }
