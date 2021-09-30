@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Not.hdl
 
+// Samson DeVol
+
 /**
  * Not gate:
  * out = not in
