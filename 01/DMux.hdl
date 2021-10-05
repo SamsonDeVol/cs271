@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/DMux.hdl
 
+//Samson DeVol
+
 /**
  * Demultiplexor:
  * {a, b} = {in, 0} if sel == 0
@@ -14,5 +16,8 @@ CHIP DMux {
     OUT a, b;
 
     PARTS:
-    // Put your code here:
+    Not(in=sel, out=nsel);
+    And(a=in, b=nsel, out=a);
+    And(a=in, b=sel, out=b);
+
 }
