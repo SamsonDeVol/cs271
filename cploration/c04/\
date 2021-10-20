@@ -1,9 +1,0 @@
-#include cstdio.h
-#include string.h
-#include stdlib.h
-#include cytype.h
-#define MAX_LINE_LENGTH 200
-
-char *strip(char *s);
-
-void parse(FILE * file);
