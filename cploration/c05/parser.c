@@ -20,6 +20,7 @@ char *strip(char *s){
 int is_Atype(const char *line){
   return line[0] == '@'; 
 }
+
 int is_label(const char *line){
   return line[0] == '(' && line[strlen(line)-1] == ')';
 }
@@ -32,14 +33,16 @@ int is_Ctype(const char *line){
     return false;
   }
 }
+
 void parse(FILE * file){
   char line[MAX_LINE_LENGTH] = {0};
-  
-  while (fgets(line, sizeof(line), file)){
+ 
+ while (fgets(line, sizeof(line), file)){
     strip(line); 
     if(!*line){
       continue;
     }
+
     char inst_type = ' ';
     if (is_Atype(line) == 1){
       inst_type = 'A';
@@ -50,6 +53,7 @@ void parse(FILE * file){
     else if (is_Ctype(line) == 1){
       inst_type = 'C';
     }
+    
     printf("%c  %s\n", inst_type, line);
   }
 }
