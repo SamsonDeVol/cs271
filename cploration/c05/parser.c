@@ -1,11 +1,11 @@
 #include "parser.h"
-#define MAX_LINE_LENGTH 200
+//#define MAX_LINE_LENGTH 200
 
 char *strip(char *s){
   char s_new[strlen(s)+1];
   int i = 0;
   for (char *s2 = s; *s2; s2++){
-    if (*s2=='/' && *(s+1)=='/'){
+    if (*s2=='/' && *(s2+1)=='/'){
       break;
     }
     else if (!isspace(*s2)){
@@ -53,7 +53,6 @@ void parse(FILE * file){
     else if (is_Ctype(line) == 1){
       inst_type = 'C';
     }
-    
     printf("%c  %s\n", inst_type, line);
   }
 }
