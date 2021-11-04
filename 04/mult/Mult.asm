@@ -9,4 +9,35 @@
 // This program only needs to handle arguments that satisfy
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
-// Put your code here.
+//i=RAM[1]
+  @1
+  D=M
+  @i
+  M=D
+
+//RAM[2] = 0
+  @2
+  M=0
+
+(LOOP)
+//Check if i = 0 > goto END
+  @i
+  D=M
+  @END
+  D;JLE
+
+//Add Ram[0] value to RAM[2] value
+  @0
+  D=M
+  @2
+  M=D+M
+
+//i--, if i>0 goto LOOP
+  @i
+  M=M-1
+  @LOOP
+  0;JMP
+
+(INFINITE_LOOP)
+  @INFINITE_LOOP
+  0;JMP
