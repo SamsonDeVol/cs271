@@ -11,4 +11,64 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
-// Put your code here.
+
+(LOOP)
+// set screen
+  @SCREEN
+  D=A
+  @0
+  M=D
+
+// if KBD goto black, else goto white
+  @KBD
+  D=M
+  @BLACK
+  D;JGT
+  @WHITE
+  0;JMP
+
+(BLACK)
+// set color black
+  @1
+  M=-1
+  D=M
+
+// fill screen
+  @0
+  A=M
+  M=D 
+  @0
+  D=M+1
+  @KBD
+  D=A-D
+  @0
+  M=M+1
+  A=M
+  @BLACK
+  D;JGT
+
+@LOOP
+0;JMP
+
+(WHITE)
+// set color white
+  @1
+  M=0
+  D=M
+
+// fill screen
+  @0
+  A=M
+  M=D 
+  @0
+  D=M+1
+  @KBD
+  D=A-D
+  @0
+  M=M+1
+  A=M
+  @WHITE
+  D;JGT
+  
+@LOOP
+0;JMP
