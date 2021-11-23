@@ -39,16 +39,70 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    //opcode as the c(sel) bit
-    Mux16(a=aluout, b=instruction[3..15], sel=instruction[0], out=out1);
+    //first mux
+    Not(in=instruction[15], out=out1);
+    Mux16(a=aluout, b=instruction, sel=out1, out=instrout1);
+    
     //a register
-    Register(in=out1, load=instruction[10], out=aout));
-    Mux16(a=aout, b=inM, sel=instruction[0], out=out2);
+    Or(a=instruction[5], b=out1, out=aload);
+    ARegister(in=instrout1, load=aload, out=ainstrout, out[0..14]=addressM);
+    Mux16(a=ainstrout, b=inM, sel=instrout2, out=out2);
+    
     //d register
-    Register(in=aluout, load=instruction[11], out=dout);
-    ALU(x=dout, y=out2, zx=instruction[4], nx=instruction[5], zy=instruction[6], ny=instruction[7], f=instruction[7], no=instruction[8], zr=zr, ng=ng, out=outM, out=aluout);
-    writeM=instruction[12];
-    addressM=aout;
-    PC(in=aout, load=instruction[0], inc=1, reset=reset, out=pc);
+    And(a=instruction[15], b=instruction[4], out=dload);
+    DRegister(in=aluout, load=dload, out=dinstrout);
+    
+    //second mux
+    And(a=instruction[12], b=instruction[15], out=instrout2);
+
+    //ALU
+    ALU(x=dinstrout, y=out2,
+    zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], 
+    zr=zr, ng=ng, out=outM, out=aluout);
+    
+    //jumps
+    Not(in=zr, out=notzr);
+    Not(in=ng, out=notng);
+    Or(a=zr, b=ng, out=zrorng);
+
+    //jgt
+    And(a=notzr, b=notng, out=jgtgo);
+    And(a=jgtgo, b=instruction[0], out=jgtout);
+    And(a=jgtout, b=instruction[15], out=jgt);
+
+    //jeq
+    And(a=zr, b=instruction[1], out=jeqout);
+    And(a=jeqout, b=instruction[15], out=jeq);
+
+    //jge
+    And(a=instruction[0], b=instruction[1], out=jgego);
+    And(a=jgego, b=notng, out=jgeout);
+    And(a=jgeout, b=instruction[15], out=jge);
+
+    //jlt
+    And(a=ng, b=instruction[2], out=jltout);
+    And(a=jltout, b=instruction[15], out=jlt);
+
+    //jne
+    And(a=instruction[0], b=instruction[2], out=jnego);
+    And(a=notzr, b=jnego, out=jneout);
+    And(a=jneout, b=instruction[15], out=jne);
+
+    //jle
+    And(a=instruction[1], b=instruction[2], out=jlego);
+    And(a=zrorng, b=jlego, out=jleout);
+    And(a=jleout, b=instruction[15], out=jle);
+
+    //jmp
+    And(a=jgego, b=jnego, out=jmpout);
+    And(a=jmpout, b=instruction[15], out=jmp);
+
+    Or8Way(in[0]=jgt, in[1]=jeq, in[2]=jge, in[3]=jlt, in[4]=jne, in[5]=jle, in[6]=jmp, in[7]=false, out=pcload);
+
+    //pc
+    PC(in=ainstrout, load=pcload, inc=true, reset=reset, out[0..14]=pc);
+
+    //write
+    And(a=instruction[3], b=instruction[15], out=writeM);
 
 }
