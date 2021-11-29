@@ -40,7 +40,8 @@ struct Symbol *symtable_find(char* key) {
   int hashIndex = hash(key);
   
   while(hashArray[hashIndex] != NULL) {
-    if(hashArray[hashIndex]->name == key) {
+
+    if(strcmp(hashArray[hashIndex]->name, key) == 0) {
       return hashArray[hashIndex];
     }
     ++hashIndex;

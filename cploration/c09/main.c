@@ -5,6 +5,8 @@
 
 int main(int argc, const char *argv[]){
 
+printf("args: %d\n", argc);
+
 if(argc != 2){
     // incorrect number of arguments
     exit_program(EXIT_INCORRECT_ARGUMENTS, argv[0]);

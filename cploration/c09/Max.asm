@@ -18,7 +18,7 @@
 (OUTPUT_FIRST)
    @R0             
    D=M              // D = first number
-(OUTPUT_FIRST)
+(OUTPUT_D)
    @R2
    M=D              // M[2] = D (greatest number)
 (INFINITE_LOOP)
