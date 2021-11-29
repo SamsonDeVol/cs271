@@ -1,3 +1,4 @@
+
 #include "symtable.h"
 
 int hash(char* str) {
@@ -11,12 +12,12 @@ int hash(char* str) {
 
 };
 
-void symtable_insert(char* name, hack_addr addr){
+void symtable_insert(char* key, hack_addr addr){
   struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
   item->addr = addr;
-  item->name = name;
+  item->name = key;
 
-  int hashIndex = hash(name);
+  int hashIndex = hash(key);
 
   while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->name != NULL) {
     ++hashIndex;
@@ -36,12 +37,12 @@ void symtable_display_table() {
   printf("\n");
 }
 
-struct Symbol *symtable_find(char* name) {
-  int hashIndex = hash(name);
+struct Symbol *symtable_find(char* key) {
+  int hashIndex = hash(key);
 
   while(hashArray[hashIndex] != NULL) {
 
-    if(hashArray[hashIndex]->name == name)
+    if(hashArray[hashIndex]->name == key)
       return hashArray[hashIndex];
 
     ++hashIndex;
