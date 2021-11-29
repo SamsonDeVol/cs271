@@ -30,6 +30,39 @@ bool parse_A_instruction(const char *line, a_instruction *instr){
 
 }
 
+void parse_C_instruction(char *line, c_instruction *instr){
+  char *token = NULL;
+  char *temp = NULL;
+  printf("inital token: %s\n", token);
+  printf("line: %s\n", line);
+  token = strtok(line, ";");
+  temp = token;
+  printf("strcomp: %d\n", str_to_compid("M"));
+  token = strtok(NULL, ";");
+  
+  instr->jump = str_to_jumpid(token);
+  token = strtok(temp, "=");
+  
+  instr->dest = str_to_destid(token);
+  
+  token = strtok(NULL, "=");
+  
+  if(token != NULL){
+    printf("input token: %d\n", str_to_compid(token));
+    instr->comp =str_to_compid(token);
+
+    
+  }
+  instr->a = (instr->comp < 0) ? (1) : (0);
+  //printf("jump: %hd\n", instr->jump);
+  //printf("dest: %hd\n", instr->dest);
+  //printf("comp: %d\n", instr->comp);
+  //printf("a: %hd\n", instr->a);
+
+
+}
+
+
 char *strip(char *s){
   char s_new[strlen(s)+1];
   int i = 0;
@@ -122,6 +155,7 @@ void parse(FILE * file){
     }
     else if (is_Ctype(line) == 1){
       inst_type = 'C';
+      parse_C_instruction(line, &instr.a_or_c.c);
     }
     printf("%c  %s\n", inst_type, line);
     instr_num++;

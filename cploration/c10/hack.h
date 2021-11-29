@@ -51,16 +51,16 @@ typedef enum comp_id {
   COMP_AMINUSD = 7,
   COMP_DANDA = 0,
   COMP_DORA = 21,
-  COMP_M = 112,
-  COMP_NOTM = 113,
-  COMP_NEGATIVEM = 115,
-  COMP_MPLUS1 = 77,
+  COMP_M = -16,
+  COMP_NOTM = -15,
+  COMP_NEGATIVEM = -13,
+  COMP_MPLUS1 = -14,
   COMP_MMINUS1 = 84,
-  COMP_DPLUSM = 66,
-  COMP_DMINUSM = 83,
-  COMP_MMINUSD = 71, 
-  COMP_DANDM = 64,
-  COMP_DORM = 85
+  COMP_DPLUSM = -62,
+  COMP_DMINUSM = -45,
+  COMP_MMINUSD = -57, 
+  COMP_DANDM = -64,
+  COMP_DORM = -43
 } comp_id;
 
 enum symbol_id {
@@ -199,7 +199,7 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "NOTD") == 0){
     id = COMP_NOTD;
   }
-  else if (strcmp(s, "NOTA")){
+  else if (strcmp(s, "NOTA") == 0){
     id = COMP_NOTA;
   }
   else if (strcmp(s, "NEGATIVED") == 0){
@@ -220,7 +220,7 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "AMINUS1") == 0){
     id = COMP_AMINUS1;
   }
-  else if (strcmp(s, "DPLUSA")){
+  else if (strcmp(s, "DPLUSA") == 0){
     id = COMP_DPLUSA;
   }
   else if (strcmp(s, "DMINUSA") == 0){
@@ -241,7 +241,7 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "NOTM") == 0){
     id = COMP_NOTM;
   }
-  else if (strcmp(s, "NEGATIVEM")){
+  else if (strcmp(s, "NEGATIVEM") == 0){
     id = COMP_NEGATIVEM;
   }
   else if (strcmp(s, "MPLUS1") == 0){
@@ -262,7 +262,7 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "DANDM") == 0){
     id = COMP_DANDM;
   }
-  else if (strcmp(s, "DORM")){
+  else if (strcmp(s, "DORM") == 0){
     id = COMP_DORM;
   }
   return id;
