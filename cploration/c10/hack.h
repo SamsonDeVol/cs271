@@ -24,7 +24,7 @@ typedef enum dest_id {
   DEST_NULL,
   DEST_M,
   DEST_D,
-  DEST_DM,
+  DEST_MD,
   DEST_A,
   DEST_AM,
   DEST_AD,
@@ -151,7 +151,7 @@ static inline jump_id str_to_jumpid(const char *s){
 
 static inline dest_id str_to_destid(const char *s){
   dest_id id = DEST_INVALID;
-  if (s == NULL){
+  if (strcmp(s, "0") == 0){
     id = DEST_NULL;
   }
   else if (strcmp(s, "M") == 0){
@@ -160,8 +160,8 @@ static inline dest_id str_to_destid(const char *s){
   else if (strcmp(s, "D") == 0){
     id = DEST_D;
   }
-  else if (strcmp(s, "DM") == 0){
-    id = DEST_DM;
+  else if (strcmp(s, "MD") == 0){
+    id = DEST_MD;
   }
   else if (strcmp(s, "A") == 0){
     id = DEST_A;
@@ -172,7 +172,7 @@ static inline dest_id str_to_destid(const char *s){
   else if (strcmp(s, "AD") == 0){
     id = DEST_AD;
   }
-  else if (strcmp(s, "ADM")){
+  else if (strcmp(s, "ADM") == 0){
     id = DEST_ADM;
   }
   return id;

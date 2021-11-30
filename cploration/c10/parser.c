@@ -39,7 +39,7 @@ void parse_C_instruction(char *line, c_instruction *instr){
   
   instr->jump = str_to_jumpid(token);
   token = strtok(temp, "=");
-  
+  printf("dest sym: %s\n", token);
   instr->dest = str_to_destid(token);
   
   token = strtok(NULL, "=");
@@ -49,10 +49,10 @@ void parse_C_instruction(char *line, c_instruction *instr){
     instr->comp = str_to_compid(token);
   }
   instr->a = (instr->comp < 0) ? (1) : (0);
-  //printf("jump: %hd\n", instr->jump);
-  //printf("dest: %hd\n", instr->dest);
+  printf("jump: %hd\n", instr->jump);
+  printf("dest: %hd\n", instr->dest);
   printf("comp: %d\n", instr->comp);
-  //printf("a: %hd\n", instr->a);
+  printf("a: %hd\n", instr->a);
 
 
 }
@@ -152,17 +152,14 @@ int parse(FILE * file, instruction *instructions){
       inst_type = 'C';
       char tmp_line[MAX_LINE_LENGTH] = {0};
       strcpy(tmp_line, line);
-      printf("line %s\n", tmp_line);
       parse_C_instruction(tmp_line, &instr.a_or_c.c);
-      
-      printf("after comp: %d\n", instr.a_or_c.c.comp);
-      if (instr.a_or_c.c.dest == -1){
+      if (instr.a_or_c.c.dest == DEST_INVALID){
         exit_program(EXIT_INVALID_C_DEST, line_num, line);
       }
       else if (instr.a_or_c.c.comp == COMP_INVALID){
         exit_program(EXIT_INVALID_C_COMP, line_num, line);
       }
-      else if (instr.a_or_c.c.jump == -1){
+      else if (instr.a_or_c.c.jump == JMP_INVALID){
         exit_program(EXIT_INVALID_C_JUMP, line_num, line);
       }
       instr.field = C_type;
