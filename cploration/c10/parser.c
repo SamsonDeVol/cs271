@@ -105,7 +105,7 @@ int is_Ctype(const char *line){
   }
 }
 
-void parse(FILE * file, instruction *instructions){
+int parse(FILE * file, instruction *instructions){
   char line[MAX_LINE_LENGTH] = {0};
   instruction instr;
   unsigned int line_num = 0;
@@ -170,5 +170,5 @@ void parse(FILE * file, instruction *instructions){
     printf("%c  %s\n", inst_type, line);
     instructions[instr_num++] = instr;
   }
-  return instr_num
+  return instr_num;
 }
