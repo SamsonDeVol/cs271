@@ -143,7 +143,7 @@ static inline jump_id str_to_jumpid(const char *s){
   else if (strcmp(s, "JLE") == 0){
     id = JMP_JLE;
   }
-  else if (strcmp(s, "JMP")){
+  else if (strcmp(s, "JMP") == 0){
     id = JMP_JMP;
   }
   return id;
@@ -187,7 +187,7 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "1") == 0){
     id = COMP_1;
   }
-  else if (strcmp(s, "NEGATIVE1") == 0){
+  else if (strcmp(s, "-1") == 0){
     id = COMP_NEGATIVE1;
   }
   else if (strcmp(s, "D") == 0){
@@ -196,73 +196,73 @@ static inline comp_id str_to_compid(const char *s){
   else if (strcmp(s, "A") == 0){
     id = COMP_A;
   }
-  else if (strcmp(s, "NOTD") == 0){
+  else if (strcmp(s, "!D") == 0){
     id = COMP_NOTD;
   }
-  else if (strcmp(s, "NOTA") == 0){
+  else if (strcmp(s, "!A") == 0){
     id = COMP_NOTA;
   }
-  else if (strcmp(s, "NEGATIVED") == 0){
+  else if (strcmp(s, "-D") == 0){
     id = COMP_NEGATIVED;
   }
-  else if (strcmp(s, "NEGATIVEA") == 0){
+  else if (strcmp(s, "-A") == 0){
     id = COMP_NEGATIVEA;
   }
-  else if (strcmp(s, "DPLUS1") == 0){
+  else if (strcmp(s, "D+1") == 0){
     id = COMP_DPLUS1;
   }
-  else if (strcmp(s, "APLUS1") == 0){
+  else if (strcmp(s, "A+1") == 0){
     id = COMP_APLUS1;
   }
-  else if (strcmp(s, "DMINUS1") == 0){
+  else if (strcmp(s, "D-1") == 0){
     id = COMP_DMINUS1;
   }
-  else if (strcmp(s, "AMINUS1") == 0){
+  else if (strcmp(s, "A-1") == 0){
     id = COMP_AMINUS1;
   }
-  else if (strcmp(s, "DPLUSA") == 0){
+  else if (strcmp(s, "D+A") == 0){
     id = COMP_DPLUSA;
   }
-  else if (strcmp(s, "DMINUSA") == 0){
+  else if (strcmp(s, "D-A") == 0){
     id = COMP_DMINUSA;
   }
-  else if (strcmp(s, "AMINUSD") == 0){
+  else if (strcmp(s, "A-D") == 0){
     id = COMP_AMINUSD;
   }
-  else if (strcmp(s, "DANDA") == 0){
+  else if (strcmp(s, "D&A") == 0){
     id = COMP_DANDA;
   }
-  else if (strcmp(s, "DORA") == 0){
+  else if (strcmp(s, "D|A") == 0){
     id = COMP_DORA;
   }
   else if (strcmp(s, "M") == 0){
     id = COMP_M;
   }
-  else if (strcmp(s, "NOTM") == 0){
+  else if (strcmp(s, "!M") == 0){
     id = COMP_NOTM;
   }
-  else if (strcmp(s, "NEGATIVEM") == 0){
+  else if (strcmp(s, "-M") == 0){
     id = COMP_NEGATIVEM;
   }
-  else if (strcmp(s, "MPLUS1") == 0){
+  else if (strcmp(s, "M+1") == 0){
     id = COMP_MPLUS1;
   }
-  else if (strcmp(s, "MMINUS1") == 0){
+  else if (strcmp(s, "M-1") == 0){
     id = COMP_MMINUS1;
   }
-  else if (strcmp(s, "DPLUSM") == 0){
+  else if (strcmp(s, "D+M") == 0){
     id = COMP_DPLUSM;
   }
-  else if (strcmp(s, "DMINUSM") == 0){
+  else if (strcmp(s, "D-M") == 0){
     id = COMP_DMINUSM;
   }
-  else if (strcmp(s, "MMINUSD") == 0){
+  else if (strcmp(s, "M-D") == 0){
     id = COMP_MMINUSD;
   }
-  else if (strcmp(s, "DANDM") == 0){
+  else if (strcmp(s, "D&M") == 0){
     id = COMP_DANDM;
   }
-  else if (strcmp(s, "DORM") == 0){
+  else if (strcmp(s, "D|M") == 0){
     id = COMP_DORM;
   }
   return id;

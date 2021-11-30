@@ -33,11 +33,8 @@ bool parse_A_instruction(const char *line, a_instruction *instr){
 void parse_C_instruction(char *line, c_instruction *instr){
   char *token = NULL;
   char *temp = NULL;
-  printf("inital token: %s\n", token);
-  printf("line: %s\n", line);
   token = strtok(line, ";");
   temp = token;
-  printf("strcomp: %d\n", str_to_compid("M"));
   token = strtok(NULL, ";");
   
   instr->jump = str_to_jumpid(token);
@@ -48,15 +45,13 @@ void parse_C_instruction(char *line, c_instruction *instr){
   token = strtok(NULL, "=");
   
   if(token != NULL){
-    printf("input token: %d\n", str_to_compid(token));
-    instr->comp =str_to_compid(token);
-
-    
+    printf("instert comp: %s\n", token);
+    instr->comp = str_to_compid(token);
   }
   instr->a = (instr->comp < 0) ? (1) : (0);
   //printf("jump: %hd\n", instr->jump);
   //printf("dest: %hd\n", instr->dest);
-  //printf("comp: %d\n", instr->comp);
+  printf("comp: %d\n", instr->comp);
   //printf("a: %hd\n", instr->a);
 
 
@@ -110,7 +105,7 @@ int is_Ctype(const char *line){
   }
 }
 
-void parse(FILE * file){
+void parse(FILE * file, instruction *instructions){
   char line[MAX_LINE_LENGTH] = {0};
   instruction instr;
   unsigned int line_num = 0;
@@ -155,10 +150,25 @@ void parse(FILE * file){
     }
     else if (is_Ctype(line) == 1){
       inst_type = 'C';
-      parse_C_instruction(line, &instr.a_or_c.c);
+      char tmp_line[MAX_LINE_LENGTH] = {0};
+      strcpy(tmp_line, line);
+      printf("line %s\n", tmp_line);
+      parse_C_instruction(tmp_line, &instr.a_or_c.c);
+      
+      printf("after comp: %d\n", instr.a_or_c.c.comp);
+      if (instr.a_or_c.c.dest == -1){
+        exit_program(EXIT_INVALID_C_DEST, line_num, line);
+      }
+      else if (instr.a_or_c.c.comp == COMP_INVALID){
+        exit_program(EXIT_INVALID_C_COMP, line_num, line);
+      }
+      else if (instr.a_or_c.c.jump == -1){
+        exit_program(EXIT_INVALID_C_JUMP, line_num, line);
+      }
+      instr.field = C_type;
     }
     printf("%c  %s\n", inst_type, line);
-    instr_num++;
+    instructions[instr_num++] = instr;
   }
-  
+  return instr_num
 }
