@@ -36,25 +36,14 @@ void parse_C_instruction(char *line, c_instruction *instr){
   token = strtok(line, ";");
   temp = token;
   token = strtok(NULL, ";");
-  
   instr->jump = str_to_jumpid(token);
   token = strtok(temp, "=");
-  printf("dest sym: %s\n", token);
-  instr->dest = str_to_destid(token);
-  
-  token = strtok(NULL, "=");
-  
+  instr->dest = str_to_destid(token); 
+  token = strtok(NULL, "="); 
   if(token != NULL){
-    printf("instert comp: %s\n", token);
     instr->comp = str_to_compid(token);
   }
   instr->a = (instr->comp < 0) ? (1) : (0);
-  printf("jump: %hd\n", instr->jump);
-  printf("dest: %hd\n", instr->dest);
-  printf("comp: %d\n", instr->comp);
-  printf("a: %hd\n", instr->a);
-
-
 }
 
 
