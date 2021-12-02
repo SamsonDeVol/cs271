@@ -37,7 +37,7 @@ typedef struct a_instruction {
 } a_instruction;
 
 typedef struct c_instruction {
-  opcode a:2;
+  opcode a:1;
   opcode comp:7;
   opcode dest:4;
   opcode jump:4;

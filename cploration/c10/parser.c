@@ -31,19 +31,44 @@ bool parse_A_instruction(const char *line, a_instruction *instr){
 }
 
 void parse_C_instruction(char *line, c_instruction *instr){
+  printf("line %s\n", line);
   char *token = NULL;
   char *temp = NULL;
+
   token = strtok(line, ";");
   temp = token;
   token = strtok(NULL, ";");
+  printf("insert jump: %s\n", token);
   instr->jump = str_to_jumpid(token);
+
+  printf("temp: %s\n", temp);
   token = strtok(temp, "=");
-  instr->dest = str_to_destid(token); 
-  token = strtok(NULL, "="); 
-  if(token != NULL){
-    instr->comp = str_to_compid(token);
-  }
-  instr->a = (instr->comp < 0) ? (1) : (0);
+  printf("insert dest: %s\n", token);
+  instr->dest = str_to_destid(token);
+  
+  token = strtok(NULL, "=");
+  printf("insert comp: %s\n", token);
+  instr->comp = str_to_compid(token);
+
+  
+
+  instr->a = (str_to_compid(token) == COMP_M 
+  || str_to_compid(token) == COMP_NOTM 
+  || str_to_compid(token) == COMP_NEGATIVEM 
+  || str_to_compid(token) == COMP_MPLUS1
+  || str_to_compid(token) == COMP_MMINUS1 
+  || str_to_compid(token) == COMP_DPLUSM 
+  || str_to_compid(token) == COMP_MMINUSD 
+  || str_to_compid(token) == COMP_DANDM 
+  || str_to_compid(token) == COMP_DORM) ? 1 : 0;
+  
+
+  printf("jump: %hd\n", instr->jump);
+  printf("dest: %hd\n", instr->dest);
+  printf("comp: %d\n", instr->comp);
+  printf("a: %d\n", instr->a & 0x1);
+
+
 }
 
 
