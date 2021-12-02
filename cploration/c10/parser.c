@@ -48,19 +48,13 @@ void parse_C_instruction(char *line, c_instruction *instr){
   
   token = strtok(NULL, "=");
   printf("insert comp: %s\n", token);
-  instr->comp = str_to_compid(token);
+  int a_value =  0;
+  printf("a_value: %d\n", a_value);
+  instr->comp = str_to_compid(token, &a_value);
+  instr->a = a_value;
 
   
 
-  instr->a = (str_to_compid(token) == COMP_M 
-  || str_to_compid(token) == COMP_NOTM 
-  || str_to_compid(token) == COMP_NEGATIVEM 
-  || str_to_compid(token) == COMP_MPLUS1
-  || str_to_compid(token) == COMP_MMINUS1 
-  || str_to_compid(token) == COMP_DPLUSM 
-  || str_to_compid(token) == COMP_MMINUSD 
-  || str_to_compid(token) == COMP_DANDM 
-  || str_to_compid(token) == COMP_DORM) ? 1 : 0;
   
 
   printf("jump: %hd\n", instr->jump);

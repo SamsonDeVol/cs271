@@ -179,9 +179,10 @@ static inline dest_id str_to_destid(const char *s){
   return id;
 }
 
-static inline comp_id str_to_compid(const char *s){
+static inline comp_id str_to_compid(const char *s, int *a){
   comp_id id = COMP_INVALID;
 
+  *a = 0;
   if (s == NULL){
     id = COMP_NULL;
   }
@@ -241,33 +242,43 @@ static inline comp_id str_to_compid(const char *s){
   }
   else if (strcmp(s, "M") == 0){
     id = COMP_M;
+    *a = 1;
   }
   else if (strcmp(s, "!M") == 0){
     id = COMP_NOTM;
+    *a = 1;
   }
   else if (strcmp(s, "-M") == 0){
     id = COMP_NEGATIVEM;
+    *a = 1;
   }
   else if (strcmp(s, "M+1") == 0){
     id = COMP_MPLUS1;
+    *a = 1;
   }
   else if (strcmp(s, "M-1") == 0){
     id = COMP_MMINUS1;
+    *a = 1;
   }
   else if (strcmp(s, "D+M") == 0){
     id = COMP_DPLUSM;
+    *a = 1;
   }
   else if (strcmp(s, "D-M") == 0){
     id = COMP_DMINUSM;
+    *a = 1;
   }
   else if (strcmp(s, "M-D") == 0){
     id = COMP_MMINUSD;
+    *a = 1;
   }
   else if (strcmp(s, "D&M") == 0){
     id = COMP_DANDM;
+    *a = 1;
   }
   else if (strcmp(s, "D|M") == 0){
     id = COMP_DORM;
+    *a = 1;
   }
   return id;
 }
