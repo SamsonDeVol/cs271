@@ -31,38 +31,21 @@ bool parse_A_instruction(const char *line, a_instruction *instr){
 }
 
 void parse_C_instruction(char *line, c_instruction *instr){
-  printf("line %s\n", line);
   char *token = NULL;
   char *temp = NULL;
+  int a_value =  0;
 
   token = strtok(line, ";");
   temp = token;
   token = strtok(NULL, ";");
-  printf("insert jump: %s\n", token);
   instr->jump = str_to_jumpid(token);
 
-  printf("temp: %s\n", temp);
   token = strtok(temp, "=");
-  printf("insert dest: %s\n", token);
   instr->dest = str_to_destid(token);
-  
+
   token = strtok(NULL, "=");
-  printf("insert comp: %s\n", token);
-  int a_value =  0;
-  printf("a_value: %d\n", a_value);
   instr->comp = str_to_compid(token, &a_value);
   instr->a = a_value;
-
-  
-
-  
-
-  printf("jump: %hd\n", instr->jump);
-  printf("dest: %hd\n", instr->dest);
-  printf("comp: %d\n", instr->comp);
-  printf("a: %d\n", instr->a & 0x1);
-
-
 }
 
 
