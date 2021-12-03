@@ -20,6 +20,7 @@ if(fin == NULL){
     exit_program(EXIT_CANNOT_OPEN_FILE, argv[1]);
 }
 int num_instructions = parse(fin, instructions);
+
 fclose(fin);
 assemble(argv[1], instructions, num_instructions);
 free(instructions);

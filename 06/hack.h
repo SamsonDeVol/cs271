@@ -7,6 +7,25 @@
 
 #define NUM_PREDEFINED_SYMBOLS 23
 
+#define OPCODE_TO_BINARY(opcode) \
+  (opcode & 0x8000 ? '1' : '0'), \
+  (opcode & 0x4000 ? '1' : '0'), \
+  (opcode & 0x2000 ? '1' : '0'), \
+  (opcode & 0x1000 ? '1' : '0'), \
+  (opcode & 0x800 ? '1' : '0'), \
+  (opcode & 0x400 ? '1' : '0'), \
+  (opcode & 0x200 ? '1' : '0'), \
+  (opcode & 0x100 ? '1' : '0'), \
+  (opcode & 0x80 ? '1' : '0'), \
+  (opcode & 0x40 ? '1' : '0'), \
+  (opcode & 0x20 ? '1' : '0'), \
+  (opcode & 0x10 ? '1' : '0'), \
+  (opcode & 0x8 ? '1' : '0'), \
+  (opcode & 0x4 ? '1' : '0'), \
+  (opcode & 0x2 ? '1' : '0'), \
+  (opcode & 0x1 ? '1' : '0'), \
+
+
 typedef enum jump_id {
   JMP_INVALID = -1,
   JMP_NULL,
@@ -33,6 +52,7 @@ typedef enum dest_id {
 
 typedef enum comp_id {
   COMP_INVALID = -1,
+  COMP_NULL,
   COMP_0 = 42,
   COMP_1 = 63,
   COMP_NEGATIVE1 = 58,
@@ -51,16 +71,16 @@ typedef enum comp_id {
   COMP_AMINUSD = 7,
   COMP_DANDA = 0,
   COMP_DORA = 21,
-  COMP_M = -16,
-  COMP_NOTM = -15,
-  COMP_NEGATIVEM = -13,
-  COMP_MPLUS1 = -14,
-  COMP_MMINUS1 = 84,
-  COMP_DPLUSM = -62,
-  COMP_DMINUSM = -45,
-  COMP_MMINUSD = -57, 
-  COMP_DANDM = -64,
-  COMP_DORM = -43
+  COMP_M = 48,
+  COMP_NOTM = 49,
+  COMP_NEGATIVEM = 51,
+  COMP_MPLUS1 = 55,
+  COMP_MMINUS1 = 13,
+  COMP_DPLUSM = 2,
+  COMP_DMINUSM = 19,
+  COMP_MMINUSD = 7, 
+  COMP_DANDM = 0,
+  COMP_DORM = 21
 } comp_id;
 
 enum symbol_id {
@@ -178,10 +198,13 @@ static inline dest_id str_to_destid(const char *s){
   return id;
 }
 
-static inline comp_id str_to_compid(const char *s){
+static inline comp_id str_to_compid(const char *s, int *a){
   comp_id id = COMP_INVALID;
-
-  if (strcmp(s, "0") == 0){
+  *a = 0;
+  if (s == NULL){
+    id = COMP_NULL;
+  }
+  else if (strcmp(s, "0") == 0){
     id = COMP_0;
   }
   else if (strcmp(s, "1") == 0){
@@ -237,33 +260,43 @@ static inline comp_id str_to_compid(const char *s){
   }
   else if (strcmp(s, "M") == 0){
     id = COMP_M;
+    *a = 1;
   }
   else if (strcmp(s, "!M") == 0){
     id = COMP_NOTM;
+    *a = 1;
   }
   else if (strcmp(s, "-M") == 0){
     id = COMP_NEGATIVEM;
+    *a = 1;
   }
   else if (strcmp(s, "M+1") == 0){
     id = COMP_MPLUS1;
+    *a = 1;
   }
   else if (strcmp(s, "M-1") == 0){
     id = COMP_MMINUS1;
+    *a = 1;
   }
   else if (strcmp(s, "D+M") == 0){
     id = COMP_DPLUSM;
+    *a = 1;
   }
   else if (strcmp(s, "D-M") == 0){
     id = COMP_DMINUSM;
+    *a = 1;
   }
   else if (strcmp(s, "M-D") == 0){
     id = COMP_MMINUSD;
+    *a = 1;
   }
   else if (strcmp(s, "D&M") == 0){
     id = COMP_DANDM;
+    *a = 1;
   }
   else if (strcmp(s, "D|M") == 0){
     id = COMP_DORM;
+    *a = 1;
   }
   return id;
 }

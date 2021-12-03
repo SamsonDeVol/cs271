@@ -22,7 +22,7 @@ int is_Atype(const char *);
 int is_label(const char *);
 int is_Ctype(const char *);
 
-enum instr_type {
+typedef enum instr_type {
   Invalid = -1,
   A_type, 
   C_type,
@@ -48,7 +48,7 @@ typedef struct instruction {
     a_instruction a;
     c_instruction c;
   } a_or_c;
-  enum instr_type field;
+  instr_type field;
 } instruction;
 
 bool parse_A_instruction(const char *line, a_instruction *instr);
@@ -58,5 +58,6 @@ char *extract_label(const char *line, char* label);
 int parse(FILE * file, instruction *instructions);
 void add_predefined_symbols();
 void assemble(const char * file_name, instruction* instructions, int num_instructions);
+opcode instruction_to_opcode(c_instruction instr);
 
 #endif

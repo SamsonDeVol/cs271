@@ -34,37 +34,71 @@ bool parse_A_instruction(const char *line, a_instruction *instr){
 void parse_C_instruction(char *line, c_instruction *instr){
   char *token = NULL;
   char *temp = NULL;
+  int a_value =  0;
+
   token = strtok(line, ";");
   temp = token;
   token = strtok(NULL, ";");
-  
   instr->jump = str_to_jumpid(token);
+
   token = strtok(temp, "=");
-  printf("dest sym: %s\n", token);
   instr->dest = str_to_destid(token);
-  
+
   token = strtok(NULL, "=");
-  
-  if(token != NULL){
-    printf("instert comp: %s\n", token);
-    instr->comp = str_to_compid(token);
-  }
-  instr->a = (instr->comp < 0) ? (1) : (0);
-  printf("jump: %hd\n", instr->jump);
-  printf("dest: %hd\n", instr->dest);
-  printf("comp: %d\n", instr->comp);
-  printf("a: %hd\n", instr->a);
-
-
+  instr->comp = str_to_compid(token, &a_value);
+  instr->a = a_value;
 }
 
-void assemble(const char * file_name, instruction* instructions, int num_instructions){
+void assemble(const char * file_name, instruction* instructions, int num_instructions){  
+  opcode op;
+  int new_address = 16;
   char *hack_file = strncat(file_name, ".hack", 5);
   FILE *hack = fopen(hack_file, "w");
   for (int i=0; i < num_instructions; i++){
+   
+   if(instructions[i].field == 0 ){
+      if(instructions[i].a_or_c.a.is_addr == false){
+        if(symtable_find(instructions[i].a_or_c.a.instruction_type.label)){
+          op = instructions[i].a_or_c.a.instruction_type.address;
+          printf("label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
+        }
+        else {
+          symtable_insert(instructions[i].a_or_c.a.instruction_type.label, new_address++);
+          op = instructions[i].a_or_c.a.instruction_type.address;
+          printf("new label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
+        }
+        free(instructions[i].a_or_c.a.instruction_type.label);
+      }
+      else {
+        op = instructions[i].a_or_c.a.instruction_type.address;
+        printf("instruction is a-address\n");
+      }
+    }
+    else if(instructions[i].field == 1){
+      printf("opcode return : %d\n", instruction_to_opcode(instructions[i].a_or_c.c));
+      op = instruction_to_opcode(instructions[i].a_or_c.c);
+      printf("instruction is c\n");
+    }
+    OPCODE_TO_BINARY(op)(op);
+    printf("op: %d\n", op);
 
   }
   fclose(hack);
+}
+
+opcode instruction_to_opcode(c_instruction instr){
+  opcode op = 0;
+  op |= (7 << 13);
+  printf("%d", instr.a & 0x1);
+
+  op |= (instr.a);
+  op |= (instr.comp);
+  op |= (instr.dest);
+  op |= (instr.jump);
+
+  //if(instr)
+
+  return op;
 }
 
 char *strip(char *s){
@@ -139,24 +173,21 @@ int parse(FILE * file, instruction *instructions){
       }
       instr.field = A_type;
     }
+    
     else if (is_label(line) == 1){
-      
       inst_type = 'L';
       char label[MAX_LABEL_LENGTH] = {0};
       strcpy(line, extract_label(line, label));
-      
       if(!isalpha(label[0])){
         exit_program(EXIT_INVALID_LABEL, line_num, line);
       }
-      
       if(symtable_find(label) != NULL){
         exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
       }
-      
       symtable_insert(label, instr_num);
       continue;
-      
     }
+   
     else if (is_Ctype(line) == 1){
       inst_type = 'C';
       char tmp_line[MAX_LINE_LENGTH] = {0};
@@ -173,8 +204,10 @@ int parse(FILE * file, instruction *instructions){
       }
       instr.field = C_type;
     }
+    
     printf("%c  %s\n", inst_type, line);
     instructions[instr_num++] = instr;
   }
+  printf("here: %d\n", instr_num);
   return instr_num;
 }
