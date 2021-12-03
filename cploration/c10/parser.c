@@ -44,7 +44,15 @@ void parse_C_instruction(char *line, c_instruction *instr){
   instr->dest = str_to_destid(token);
 
   token = strtok(NULL, "=");
-  instr->comp = str_to_compid(token, &a_value);
+  if (token == NULL){
+    instr->comp = str_to_compid(temp, &a_value);
+    instr->dest = str_to_destid("0");
+  }
+  else{
+    instr->comp = str_to_compid(token, &a_value);
+
+  }
+
   instr->a = a_value;
 }
 
