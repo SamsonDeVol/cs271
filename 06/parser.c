@@ -61,7 +61,7 @@ void parse_C_instruction(char *line, c_instruction *instr){
 void assemble(const char * file_name, instruction* instructions, int num_instructions){  
   opcode op;
   int new_address = 16;
-  char *hack_file = strncat(file_name, ".hack", 5);
+  char *hack_file = strncat((char*)file_name, ".hack", 5);
   FILE *hack = fopen(hack_file, "w");
   for (int i=0; i < num_instructions; i++){
    
@@ -69,27 +69,19 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
       if(instructions[i].a_or_c.a.is_addr == false){
         if(symtable_find(instructions[i].a_or_c.a.instruction_type.label)){
           op = symtable_find(instructions[i].a_or_c.a.instruction_type.label)->addr;
-          //printf("opcode: %d\n", op);
-          //printf("label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
         }
         else {
           symtable_insert(instructions[i].a_or_c.a.instruction_type.label, new_address++);
           op = symtable_find(instructions[i].a_or_c.a.instruction_type.label)->addr;
-          //printf("opcode: %d\n", op);
-          //printf("new label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
         }
         free(instructions[i].a_or_c.a.instruction_type.label);
       }
       else {
         op = instructions[i].a_or_c.a.instruction_type.address;
-        //printf("instruction is a-address\n");
       }
     }
     else if(instructions[i].field == 1){
-      //printf("opcode return : %d\n", instruction_to_opcode(instructions[i].a_or_c.c));
       op = instruction_to_opcode(instructions[i].a_or_c.c);
-      //printf("instruction is c\n");
-     // printf("op: %d\n", OPCODE_TO_BINARY(op));
     }
     fprintf(hack, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
 
