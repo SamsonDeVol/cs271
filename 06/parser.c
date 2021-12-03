@@ -43,10 +43,19 @@ void parse_C_instruction(char *line, c_instruction *instr){
 
   token = strtok(temp, "=");
   instr->dest = str_to_destid(token);
-
+  temp = token;
   token = strtok(NULL, "=");
-  instr->comp = str_to_compid(token, &a_value);
+  if (token == NULL){
+    instr->comp = str_to_compid(temp, &a_value);
+    instr->dest = str_to_destid("0");
+  }
+  else{
+    instr->comp = str_to_compid(token, &a_value);
+
+  }
+
   instr->a = a_value;
+
 }
 
 void assemble(const char * file_name, instruction* instructions, int num_instructions){  
@@ -59,28 +68,30 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
    if(instructions[i].field == 0 ){
       if(instructions[i].a_or_c.a.is_addr == false){
         if(symtable_find(instructions[i].a_or_c.a.instruction_type.label)){
-          op = instructions[i].a_or_c.a.instruction_type.address;
-          printf("label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
+          op = symtable_find(instructions[i].a_or_c.a.instruction_type.label)->addr;
+          //printf("opcode: %d\n", op);
+          //printf("label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
         }
         else {
           symtable_insert(instructions[i].a_or_c.a.instruction_type.label, new_address++);
-          op = instructions[i].a_or_c.a.instruction_type.address;
-          printf("new label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
+          op = symtable_find(instructions[i].a_or_c.a.instruction_type.label)->addr;
+          //printf("opcode: %d\n", op);
+          //printf("new label: %s\n", symtable_find(instructions[i].a_or_c.a.instruction_type.label)->name);
         }
         free(instructions[i].a_or_c.a.instruction_type.label);
       }
       else {
         op = instructions[i].a_or_c.a.instruction_type.address;
-        printf("instruction is a-address\n");
+        //printf("instruction is a-address\n");
       }
     }
     else if(instructions[i].field == 1){
-      printf("opcode return : %d\n", instruction_to_opcode(instructions[i].a_or_c.c));
+      //printf("opcode return : %d\n", instruction_to_opcode(instructions[i].a_or_c.c));
       op = instruction_to_opcode(instructions[i].a_or_c.c);
-      printf("instruction is c\n");
+      //printf("instruction is c\n");
+     // printf("op: %d\n", OPCODE_TO_BINARY(op));
     }
-    OPCODE_TO_BINARY(op)(op);
-    printf("op: %d\n", op);
+    fprintf(hack, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
 
   }
   fclose(hack);
@@ -89,15 +100,11 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
 opcode instruction_to_opcode(c_instruction instr){
   opcode op = 0;
   op |= (7 << 13);
-  printf("%d", instr.a & 0x1);
-
-  op |= (instr.a);
-  op |= (instr.comp);
-  op |= (instr.dest);
-  op |= (instr.jump);
-
-  //if(instr)
-
+  op |= (instr.a << 12);
+  op |= (instr.comp << 6);
+  op |= (instr.dest << 3);
+  op |= (instr.jump << 0);
+  printf("a: %d, comp: %d, dest: %d, jump: %d", instr.a, instr.comp, instr.dest, instr.jump);
   return op;
 }
 
@@ -208,6 +215,5 @@ int parse(FILE * file, instruction *instructions){
     printf("%c  %s\n", inst_type, line);
     instructions[instr_num++] = instr;
   }
-  printf("here: %d\n", instr_num);
   return instr_num;
 }

@@ -23,7 +23,7 @@
   (opcode & 0x8 ? '1' : '0'), \
   (opcode & 0x4 ? '1' : '0'), \
   (opcode & 0x2 ? '1' : '0'), \
-  (opcode & 0x1 ? '1' : '0'), \
+  (opcode & 0x1 ? '1' : '0') \
 
 
 typedef enum jump_id {
@@ -65,7 +65,7 @@ typedef enum comp_id {
   COMP_DPLUS1 = 31,
   COMP_APLUS1 = 55,
   COMP_DMINUS1 = 14,
-  COMP_AMINUS1 = 13,
+  COMP_AMINUS1 = 50,
   COMP_DPLUSA = 2,
   COMP_DMINUSA = 19,
   COMP_AMINUSD = 7,
@@ -75,7 +75,7 @@ typedef enum comp_id {
   COMP_NOTM = 49,
   COMP_NEGATIVEM = 51,
   COMP_MPLUS1 = 55,
-  COMP_MMINUS1 = 13,
+  COMP_MMINUS1 = 50,
   COMP_DPLUSM = 2,
   COMP_DMINUSM = 19,
   COMP_MMINUSD = 7, 
